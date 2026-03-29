@@ -14,3 +14,11 @@ void idt_set_descriptor(uint8_t vector, void *isr, uint8_t flags) {
   idt[vector].isr_high = (addr >> 32) & 0xFFFFFFFF;
   idt[vector].reserved = 0;
 }
+
+void idt_init() {
+  idtr.base = (uint64_t)&idt[0];
+  idtr.limit = (uint16_t)sizeof(struct idt_entry) * 256 - 1;
+  for (uint64_t i = 0; i < 256; ++i) {
+    // idt_set_descriptor(i, isr, flags);
+  }
+}
