@@ -1,5 +1,5 @@
-#include "fb_console.h"
-#include "gdt.h"
+#include "./fb_console/fb_console.h"
+#include "./gdt/gdt.h"
 #include <limine.h>
 #include <stdbool.h>
 #include <stdint.h>
