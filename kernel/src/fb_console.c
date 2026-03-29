@@ -1,5 +1,7 @@
 #include "fb_console.h"
 
+#define EOF -1
+
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
 // See specification for further info.
@@ -16,7 +18,7 @@ __attribute__((
     used,
     section(
         ".limine_requests"))) static volatile struct limine_framebuffer_request
-    framebuffer_request = {.id = LIMINE_FRAMEBUFFER_REQUEST_ID, .revision = 0};
+    fb_request = {.id = LIMINE_FRAMEBUFFER_REQUEST_ID, .revision = 0};
 
 // Finally, define the start and end markers for the Limine requests.
 // These can also be moved anywhere, to any .c file, as seen fit.
@@ -47,12 +49,7 @@ typedef struct {
 
 static psf2_header_t *current_font = NULL;
 
-__attribute__((
-    used,
-    section(".requests"))) static volatile struct limine_framebuffer_request
-    fb_request = {.id = LIMINE_FRAMEBUFFER_REQUEST_ID, .revision = 0};
-
-static uint32_t *fb_ptr = NULL;
+volatile static uint32_t *fb_ptr = NULL;
 static uint64_t fb_width = 0;
 static uint64_t fb_height = 0;
 static uint64_t fb_pitch = 0;
@@ -66,11 +63,6 @@ void fb_init() {
     hcf();
   }
 
-  // Ensure we got a framebuffer.
-  if (framebuffer_request.response == NULL ||
-      framebuffer_request.response->framebuffer_count < 1) {
-    hcf();
-  }
   if (fb_request.response == NULL || fb_request.response->framebuffer_count < 1)
     while (1)
       ;
@@ -135,4 +127,13 @@ void fb_putchar(char c) {
     cursor_y = 0;
     cursor_x = 0;
   }
+}
+
+int fb_puts(const char *c) {
+  if (c == NULL)
+    return EOF;
+  while (*c)
+    fb_putchar(*c++);
+  fb_putchar('\n');
+  return 0;
 }

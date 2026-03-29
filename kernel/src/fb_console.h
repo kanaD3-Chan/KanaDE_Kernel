@@ -12,5 +12,5 @@
 
 void fb_init();
 void fb_putchar(char c);
-
+int fb_puts(const char *c);
 #endif // !__FB_CONSOLE_H

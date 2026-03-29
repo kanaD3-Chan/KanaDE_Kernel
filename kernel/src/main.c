@@ -1,11 +1,7 @@
-#include "main.h"
 #include "fb_console.h"
 #include "gdt.h"
-
-#include "fb_console.h"
 #include <limine.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 
 static inline void enable_fpu_and_sse() {
@@ -30,8 +26,8 @@ static void hcf(void) {
 }
 
 void init() {
-  enable_fpu_and_sse();
-  gdt_init();
+  // enable_fpu_and_sse();
+  // gdt_init();
   fb_init();
 }
 
@@ -41,10 +37,6 @@ void init() {
 void kmain(void) {
 
   init();
-
-  // Print a nice pattern to screen as an example.
-  // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-  fb_putchar('c');
-  // We're done, just hang...
+  fb_puts("Hello World!");
   hcf();
 }
