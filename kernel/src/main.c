@@ -26,8 +26,8 @@ static void hcf(void) {
 }
 
 void init() {
-  // enable_fpu_and_sse();
-  // gdt_init();
+  enable_fpu_and_sse();
+  gdt_init();
   fb_init();
 }
 
