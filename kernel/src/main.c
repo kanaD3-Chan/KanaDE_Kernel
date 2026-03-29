@@ -32,6 +32,20 @@ __attribute__((used,
 __attribute__((used, section(".limine_requests_end"))) static volatile uint64_t
     limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;
 
+static inline void enable_fpu_and_sse() {
+  uint64_t cr0, cr4;
+
+  __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+  cr0 &= ~(1 << 2);
+  cr0 |= (1 << 1);
+  __asm__ volatile("mov %0, %%cr0" ::"r"(cr0));
+
+  __asm__ volatile("mov %%cr4, %0" : "=r"(cr4));
+  cr4 |= (1 << 9);
+  cr4 |= (1 << 10);
+  __asm__ volatile("mov %0, %%cr4" ::"r"(cr4));
+}
+
 // Halt and catch fire function.
 static void hcf(void) {
   for (;;) {
@@ -39,7 +53,10 @@ static void hcf(void) {
   }
 }
 
-void init() { gdt_init(); }
+void init() {
+  enable_fpu_and_sse();
+  gdt_init();
+}
 
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
@@ -55,6 +72,7 @@ void kmain(void) {
       framebuffer_request.response->framebuffer_count < 1) {
     hcf();
   }
+  init();
 
   // Fetch the first framebuffer.
   struct limine_framebuffer *framebuffer =
