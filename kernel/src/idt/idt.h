@@ -18,4 +18,6 @@ struct idt_ptr {
   uint64_t base;
 } __attribute__((packed));
 
+void idt_init();
+
 #endif // !__IDT_H

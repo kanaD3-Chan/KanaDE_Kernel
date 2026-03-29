@@ -1,8 +1,10 @@
 #include "./fb_console/fb_console.h"
 #include "./gdt/gdt.h"
+#include "idt/idt.h"
 #include <limine.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdnoreturn.h>
 
 static inline void enable_fpu_and_sse() {
   uint64_t cr0, cr4;
@@ -28,13 +30,14 @@ static void hcf(void) {
 void init() {
   enable_fpu_and_sse();
   gdt_init();
+  idt_init();
   fb_init();
 }
 
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
-void kmain(void) {
+noreturn void kmain(void) {
 
   init();
   fb_puts("Hello World!");

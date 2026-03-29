@@ -1,4 +1,5 @@
 #include "idt.h"
+#include "interrupts/interrupts.h"
 #include <stdint.h>
 
 struct idt_entry idt[256];
@@ -19,6 +20,9 @@ void idt_init() {
   idtr.base = (uint64_t)&idt[0];
   idtr.limit = (uint16_t)sizeof(struct idt_entry) * 256 - 1;
   for (uint64_t i = 0; i < 256; ++i) {
-    // idt_set_descriptor(i, isr, flags);
+    idt_set_descriptor(i, 0, 0);
   }
+  idt_set_descriptor(0, isr_divided_by_zero, 0x8E);
+  __asm__ volatile("lidt %0" ::"m"(idtr));
+  __asm__ volatile("sti");
 }
