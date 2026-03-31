@@ -1,6 +1,7 @@
-#include "./fb_console/fb_console.h"
-#include "./gdt/gdt.h"
+#include "fb_console/fb_console.h"
+#include "gdt/gdt.h"
 #include "idt/idt.h"
+
 #include <limine.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -21,7 +22,7 @@ static inline void enable_fpu_and_sse() {
 }
 
 // Halt and catch fire function.
-static void hcf(void) {
+noreturn static void hcf(void) {
   for (;;) {
     asm("hlt");
   }
