@@ -1,6 +1,4 @@
 #include "fb_console.h"
-#include "../limine/limine.h"
-#include <stdint.h>
 
 #define EOF -1
 

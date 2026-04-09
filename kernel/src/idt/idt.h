@@ -1,6 +1,7 @@
 #ifndef __IDT_H
 #define __IDT_H
 
+#include "interrupts/interrupts.h" // IWYU pragma: keep
 #include <stdint.h>
 
 struct idt_entry {

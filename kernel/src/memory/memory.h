@@ -1,8 +1,8 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h> // IWYU pragma: keep
 
 void *memcpy(void *restrict dest, const void *restrict src, size_t n);
 void *memset(void *s, int c, size_t n);
