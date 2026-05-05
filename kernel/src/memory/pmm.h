@@ -10,8 +10,8 @@
 #include <stdint.h>                   // IWYU pragma: keep
 
 void pmm_init();
-void *pmm_alloc();
-void pmm_free(void *ptr);
+uint64_t pmm_alloc();
+void pmm_free(uint64_t ptr);
 #define PHYS_TO_VIRT(addr) ((void *)((uint64_t)(addr) + hhdm_offset))
 #define VIRT_TO_PHYS(addr) ((uint64_t)(addr) - hhdm_offset)
 #endif // !__PMM_H
