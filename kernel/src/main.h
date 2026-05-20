@@ -5,6 +5,7 @@
 #include "gdt/gdt.h"               // IWYU pragma: keep
 #include "idt/idt.h"               // IWYU pragma: keep
 #include "memory/pmm.h"            // IWYU pragma: keep
+#include "memory/vmm.h"            // IWYU pragma: keep
 #include <limine.h>                // IWYU pragma: keep
 #include <memory/memory.h>         // IWYU pragma: keep
 #include <stdbool.h>               // IWYU pragma: keep

@@ -1,4 +1,5 @@
 #include "fb_console.h"
+#include <stdint.h>
 
 #define EOF -1
 
@@ -108,4 +109,19 @@ int fb_puts(const char *c) {
     fb_putchar(*c++);
   fb_putchar('\n');
   return 0;
+}
+
+void fb_print_str(const char *str) {
+  if (!str)
+    return;
+  while (*str) {
+    fb_putchar(*str++);
+  }
+}
+
+void fb_print_hex(uint64_t val) {
+  fb_print_str("0x");
+  const char *hex_chars = "0123456789ABCDEF";
+  for (int i = 15; i >= 0; i--)
+    fb_putchar(hex_chars[(val >> (i * 4)) & 0xF]);
 }

@@ -14,4 +14,6 @@
 void fb_init();
 void fb_putchar(char c);
 int fb_puts(const char *c);
+void fb_print_str(const char *str);
+void fb_print_hex(uint64_t val);
 #endif // !__FB_CONSOLE_H

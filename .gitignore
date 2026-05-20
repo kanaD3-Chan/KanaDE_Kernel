@@ -2,3 +2,7 @@
 /edk2-ovmf
 *.iso
 *.hdd
+collector.py
+merged_source_code.txt
+comple_commands.json
+

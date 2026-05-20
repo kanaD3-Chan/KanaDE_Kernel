@@ -1,9 +1,7 @@
 #include "pmm.h"
+#include <stdint.h>
 
-static uint8_t *bitmap = NULL;
-static uint64_t total_pages = 0;
-static uint64_t bitmap_size = 0;
-static uint64_t hhdm_offset = 0;
+uint64_t hhdm_offset = 0;
 
 static inline void bitmap_set(uint64_t page_idx) {
   bitmap[page_idx / 8] |= (1 << (page_idx % 8));
@@ -61,7 +59,7 @@ uint64_t pmm_alloc() {
     }
     i++;
   }
-  return NULL;
+  return 0;
 }
 
 void pmm_init() {

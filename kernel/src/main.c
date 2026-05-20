@@ -1,4 +1,8 @@
 #include "main.h"
+#include "fb_console/fb_console.h"
+#include "memory/pmm.h"
+#include "memory/vmm.h"
+#include <stdint.h>
 
 static inline void enable_fpu_and_sse() {
   uint64_t cr0, cr4;
@@ -31,6 +35,7 @@ void init() {
   idt_init();
   fb_init();
   pmm_init();
+  vmm_init();
 }
 
 /*  The following will be our kernel's entry point.
@@ -39,5 +44,20 @@ void init() {
 noreturn void kmain(void) {
   init();
   fb_puts("Hello World!");
+  uint64_t phys_page = pmm_alloc();
+
+  uint64_t test_vaddr = 0x1000000000;
+
+  uint64_t *pml4 = vmm_get_current_pml4();
+
+  vmm_map_page(pml4, test_vaddr, phys_page, PTE_PRESENT | PTE_WRITABLE);
+  uint64_t *ptr = (uint64_t *)test_vaddr;
+  *ptr = 0xDEADBEEFCAFEBABE;
+
+  if (*ptr == 0xDEADBEEFCAFEBABE) {
+    fb_puts("VMM Mapping Test Passed!");
+  } else {
+    fb_puts("VMM Mapping Test Failed!");
+  }
   hcf();
 }
